@@ -5,8 +5,8 @@ format long
 N = 32;
 alpha = 0.1;
 n_mode = 5;
-t_max = 5;
-number_step = 5000;
+t_max = 10000;
+number_step = 500000;
 dt = t_max/number_step;
 lattice_parameter = 1; %lattice parameter
 T = (0:dt:t_max);
@@ -35,81 +35,52 @@ initial_condition = zeros(2*N,1);
 initial_condition(N+1:2*N,1) = x_0;
 
 for i = 1:n_mode
-    mode_k(1,i) = sqrt(2/(N+1))*sum(x(1,1:N).*sin(pi*i*(1:N)/(N+1)));
+    mode_k(1,i) = sqrt(2/(N+1))*sum(x_0'.*sin(pi*i*(1:N)/(N+1)));
     energy_k(1,i) = 0.5*(omega_k(i)*mode_k(1,i))^2;
 end
 
 
 %Define  matrix for the system
-matrix_function = zeros(2*N,2*N);
+linear_part = zeros(2*N,2*N);
+next_quadratic = zeros(2*N,2*N);
+prev_quadratic = zeros(2*N,2*N);
 for i = 1:N
-    matrix_function(i,i) = -2;
+    linear_part(i,i+N) = -2;
+    next_quadratic(i,i+N) = 1;
+    prev_quadratic(i,i+N) = 1;
     if i ~= 1
-        matrix_function(i,i-1) = 1;
+        linear_part(i,i-1+N) = 1;
+        prev_quadratic(i,i+N-1) = -1;
     end
     if i ~= N
-        matrix_function(i,i+1) = 1;
+        linear_part(i,i+1+N) = 1;
+        next_quadratic(i,i+N+1) = -1;
     end
+    linear_part(i+N,i) = 1;
 end
 
- for i = N+1:2*N
-    matrix_function(i,i) = 1;
- end
+option = odeset('RelTol',1e-4,'AbsTol',1e-6);
+F = @(t,state) linear_part*state + alpha*((next_quadratic*state).^2-(prev_quadratic*state).^2);
+[T_sol,solution] = ode45(F,T,initial_condition,option);
 
-F = @(t,state) matrix_function*state;
-[t,solution] = ode45(F,T,initial_condition);
-plot(t,solution(:,35));
-%{
-for k = 1:n_mode
-    mode_k(t,k) = sqrt(2/(N+1))*sum(x(t,2:N+1).*sin(pi*k.*(1:N)/(N+1)));
-    energy_k(t,k) = 0.5*((mode_k(t,k)-mode_k(t-1,k))/dt)^2 + 0.5*(omega_k(k)*mode_k(t,k))^2;
-    end
-%
-% Calculating the energy at time t
-%
-end
-%{
+total_energy = zeros(length(T),1);
+total_energy(1) = sum(energy_k(1,:));
 for t = 2:length(T)-1
     for k = 1:n_mode
-    mode_k(t,k) = sqrt(2/(N+1))*sum(x(t,2:N+1).*sin(pi*k.*(1:N)/N+1));
-    energy_k(t,k) = 0.5*(mode_k(t+1,k)-mode_k(t-1,k)/(2*dt))^2 + (omega_k(k)*mode_k(t,k))^2;
+    mode_k(t,k) = sqrt(2/(N+1))*sum(solution(t,N+1:2*N).*sin(pi*k.*(1:N)/(N+1)));
+    energy_k(t,k) = 0.5*((mode_k(t,k)-mode_k(t-1,k))/dt)^2 + 0.5*(omega_k(k)*mode_k(t,k))^2;
     end
+    total_energy(t) = sum(energy_k(t,:));
 end
 
-for i=1:n_mode
-    figure(1)
-    plot(T,energy_k(:,i),'b-','LineWidth',1);
-    hold on;
-    xlabel('t');
-    ylabel('E_{k}');
-    string = strcat('N=',num2str(N),', alpha=',num2str(alpha));
-end
-%}
-plot(T,energy_k(:,1),'r-','LineWidth',1);hold on
-plot(T,energy_k(:,2),'k-','LineWidth',1);
-plot(T,energy_k(:,3),'b-','LineWidth',1);
-plot(T,energy_k(:,4),'m-','LineWidth',1);
-plot(T,energy_k(:,5),'g-','LineWidth',1);
+figure(1)
+plot(T_sol,energy_k(:,1),'r-','LineWidth',1);hold on
+plot(T_sol,energy_k(:,2),'k-','LineWidth',1);
+plot(T_sol,energy_k(:,3),'b-','LineWidth',1);
+plot(T_sol,energy_k(:,4),'m-','LineWidth',1);
+plot(T_sol,energy_k(:,5),'g-','LineWidth',1);
 xlabel('t');ylabel('E_{k}');
 legend('mode 1','mode 2','mode 3','mode 4','mode 5')
-%
-% Graphic simulation of particles
-%
-delta = lattice_parameter*ones(length(T),1);
-figure(2)
-for i = 1:N+1
-    x(:,i) = x(:,i) + i*delta;
-end
-for j=1:length(T)
-    figure(2)
-    plot(x(j,:),zeros(N+2,1),'o', 'MarkerSize', 10, 'MarkerFaceColor', 'b');
-    drawnow;
-end
 
-%}
-
-
-
-
-  
-   
+figure(2) 
+plot(T_sol,total_energy);
