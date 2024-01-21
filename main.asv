@@ -27,7 +27,7 @@ initial_condition(N+1:2*N,1) = A\mode_0;
 % Ode15s Solver
 
 [T_sol,sol_ode15s] = odeSolver(N, alpha, initial_condition, MS_cost, T); 
-[energy_k,total_energy_error] = plotEnergy(sol_ode15s(:,N+1:2*N),sol_ode15s(:,1:N),T_sol,N,A,n_mode,'Ode15s');
+[energy_k,total_energy_error] = plotEnergy(sol_ode15s(N+1:2*N),T_sol,N,n_mode,'Ode15s');
 disp("Ode15: ")
 disp(max(total_energy_error))
 
@@ -35,28 +35,22 @@ disp(max(total_energy_error))
 % Euler Method
 %
 [x_Euler,v_Euler] = EulerMethod(N, alpha, initial_condition, MS_cost,T,dt);
-[energy_k,total_energy_error] = plotEnergy(x_Euler,v_Euler,T,N,A,n_mode,'Euler');
+[energy_k,total_energy_error] = plotEnergy(x_Euler,T,N,n_mode,'Euler');
 disp("Euler: ")
 disp(max(total_energy_error))
 
 %
 % Runge-Kutta 3
 [x_rk3,v_rk3] = rk3(N, alpha, initial_condition, MS_cost,T,dt);
-[energy_k,total_energy_error] = plotEnergy(x_rk3,v_rk3,T,N,A,n_mode,'RK-3');
+[energy_k,total_energy_error] = plotEnergy(v_rk3,T,N,n_mode,'RK-3');
 disp("RK-3: ")
 disp(max(total_energy_error))
 %
 % Runge Kutta 4
 %
 [x_rk4,v_rk4] = rk4(N, alpha, initial_condition, MS_cost,T,dt);
-[energy_k,total_energy_error] = plotEnergy(x_rk4,v_rk4,T,N,A,n_mode,'RK-4');
+[energy_k,total_energy_error] = plotEnergy(v_rk3,T,N,n_mode,'RK-4');
 disp("RK-4: ")
 disp(max(total_energy_error))
-
-[x_ruth3,v_ruth3] = Ruth3(N, alpha, initial_condition, MS_cost,T,dt);
-[energy_k,total_energy_error] = plotEnergy(x_ruth3,v_ruth3,T,N,A,n_mode,'Ruth-3');
-disp("Ruth-3: ")
-disp(max(total_energy_error))
-
 
 

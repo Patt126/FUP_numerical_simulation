@@ -7,10 +7,20 @@ total_energy_error = zeros(length(T),1);
 total_energy_error(1) = 0;
 omega_k = 2*sin(pi.*(1:N)./(2*(N+1))); %frequencies
 
-for t = 1:length(T)
-    mode_k(t,:) = (A*x(t,:)')';
-    speed_k(t,:) = (A*v(t,:)')';
-    energy_k(t,:) = 0.5*((speed_k(t,:))).^2 + 0.5*(omega_k(1,:).*mode_k(t,:)).^2; 
+for i = 1:N
+    %mode_k(1,i) = sqrt(2/(N+1))*sum(x(1,:).*sin(pi*i*(1:N)/(N+1)));
+    energy_k(1,i) = 0.5*(omega_k(i)*mode_k(1,i))^2;
+end
+mode_k(1,:) = A*x(1,:)';
+
+for t = 2:length(T)-1
+    mode_k(t,:) = A*x(t,:)';
+    speed_k(t,k) = A;
+    for k = 1:N
+        %mode_k(t,k) = sqrt(2/(N+1))*sum(x(t,:).*sin(pi*k.*(1:N)/(N+1)));
+        %speed_k(t,k) = sqrt(2/(N+1))*sum(v(t,:).*sin(pi*k.*(1:N)/(N+1)));
+        energy_k(t,k) = 0.5*((speed_k(t,k)))^2 + 0.5*(omega_k(k)*mode_k(t,k))^2; 
+    end
     total_energy_error(t) = abs(sum(energy_k(t,:)) -1);
 end
 
