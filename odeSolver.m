@@ -22,9 +22,9 @@ for i = 1:N
     linear_part(i+N,i) = 1;
 end
 
-option = odeset('RelTol',1e-4,'AbsTol',1e-6);
+option = odeset('RelTol',1e-5,'MaxStep',1e-3);
 F = @(t,state) linear_part*state + alpha*((next_quadratic*state).^2-(prev_quadratic*state).^2);
-[T_sol,sol_ode15s] = ode15s(F,T,initial_condition,option);
+[T_sol,sol_ode15s] = ode45(F,T,initial_condition,option);
 
 end
 

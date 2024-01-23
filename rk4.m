@@ -5,24 +5,12 @@ x(1,:) = initial_condition(N+1:2*N);
 v = zeros(length(T),N);
 v(1,:) = initial_condition(1:N);
 
-linear_part = zeros(N,N);
-next_quadratic = zeros(N,N);
-prev_quadratic = zeros(N,N);
-for i = 1:N
-    linear_part(i,i) = -2;
-    next_quadratic(i,i) = 1;
-    prev_quadratic(i,i) = 1;
-    if i ~= 1
-        linear_part(i,i-1) = 1;
-        prev_quadratic(i,i-1) = -1;
-    end
-    if i ~= N
-        linear_part(i,i+1) = 1;
-        next_quadratic(i,i+1) = -1;
-    end
-end
+e = ones(N,1);
+linear_part = spdiags([e -2*e e],-1:1,N,N);
+next_quadratic = spdiags([e -e], 0:1 ,N,N);
+prev_quadratic = spdiags([-e e], -1:0 ,N,N);
 
-F = @(t,state) linear_part*state + alpha*((next_quadratic*state).^2-(prev_quadratic*state).^2);
+F = @(t,x) sqrt(MS_cost)*linear_part*x + alpha*((next_quadratic*x).^2-(prev_quadratic*x).^2);
 I = @(t,state) diag(ones(N,1))*state;
 
 for t = 1:length(T)-1

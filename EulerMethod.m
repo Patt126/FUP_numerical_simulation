@@ -11,10 +11,10 @@ next_quadratic = spdiags([e -e], 0:1 ,N,N);
 prev_quadratic = spdiags([-e e], -1:0 ,N,N);
 
 
-F = @(t,state) sqrt(MS_cost)*linear_part*state + alpha*((next_quadratic*state).^2-(prev_quadratic*state).^2);
+F = @(t,x) sqrt(MS_cost)*linear_part*x + alpha*((next_quadratic*x).^2-(prev_quadratic*x).^2);
 
 for t = 2:length(T)
-    v(t,:) = v(t-1,:) + dt*F(t,x(t-1,:)')';
+    v(t,:) = v(t-1,:) + dt*F(t-1,x(t-1,:)')';
     x(t,:) = x(t-1,:) + dt*v(t,:);
 end
 

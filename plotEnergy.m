@@ -5,6 +5,8 @@ speed_k = zeros(length(T),N);
 energy_k = zeros(length(T),N); %modes' energy
 total_energy_error = zeros(length(T),1);
 total_energy_error(1) = 0;
+total_total_energy_error = zeros(length(T),1);
+total_total_energy_error = 0;
 omega_k = 2*sin(pi.*(1:N)./(2*(N+1))); %frequencies
 
 for t = 1:length(T)
@@ -14,6 +16,26 @@ for t = 1:length(T)
     total_energy_error(t) = abs(sum(energy_k(t,:)) -1);
 end
 
+for t = 2:length(T)
+total_total_energy_error(t) = (total_total_energy_error(t-1) + total_energy_error(t));
+end
+total_total_energy_error = total_total_energy_error/length(T);
+% Choose a window size
+window_size = length(T)/1000;
+
+% Calculate the moving average
+moving_average = movmean(total_energy_error, window_size);
+
+% Plot the moving average
+figure(3)
+plot(total_total_energy_error, 'DisplayName', ['Moving Average (Window Size = ', num2str(window_size), ')']);
+legend('show');
+xlabel('Time');
+ylabel('Avarage Value');
+s = strcat('Moving Average Analysis',method_name);
+title(s);
+grid on;
+saveas(3,s)
 % Total energy plot (CONSIDER PLOT OUT)
 figure(1);
 plot(T,total_energy_error,'b-','LineWidth',1);
