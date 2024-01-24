@@ -15,8 +15,8 @@ alpha = 0.1; % non-linear coefficient
 MS_cost = 1; % Mass-Spring constant
 energy = 1; % System's energy
 n_mode = 5;  % Number of modes to visualize in the plot
-t_max = 1e4; % Simulation time
-number_step = 1e6; % Number of step
+t_max = 5e3; % Simulation time
+number_step = 1e5; % Number of step
 dt = t_max/number_step; % Step size
 T = (0:dt:t_max); % Create time vector
 lattice_parameter = 1; % Distance between atoms
@@ -42,32 +42,33 @@ disp("Relative error with inf-norm for coordinate 14")
 disp(rel_err_x_inf);
 disp("Relative error with inf-norm for total energy ")
 disp(rel_err_energy_inf);
-
 %
 % Leapfrog
 %
 % [x_Leapfrog, v_Leapfrog] = Leapfrog(N, alpha, initial_condition, MS_cost, T, dt); 
-% [energy_k, total_energy] = plotEnergy(x_Leapfrog, v_Leapfrog, T, N, A, n_mode, 'Leapfrog'); 
-% [rel_err_x_inf, rel_err_energy_inf] = Error_method(x_Leapfrog(:,14), total_energy); 
+% [energy_k, total_energy] = plotEnergy(x_Leapfrog, v_Leapfrog, T, N, A, MS_cost, n_mode, 'Leapfrog'); 
+% [rel_err_x_inf, rel_err_energy_inf] = Error_method(x_Leapfrog(:,14), total_energy, N, alpha, initial_condition , MS_cost, T); 
 % 
 % Nystrom 3
 %
 % [x_Nystrom, v_Nystrom] = Nystrom(N, alpha, initial_condition, MS_cost, T, dt); 
-% [energy_k, total_energy] = plotEnergy(x_Nystrom, v_Nystrom, T, N, A, n_mode, 'Nystrom'); 
-% [rel_err_x_inf, rel_err_energy_inf] = Error_method(x_Nystrom(:,14), total_energy); 
+% [energy_k, total_energy] = plotEnergy(x_Nystrom, v_Nystrom, T, N, A, MS_cost, n_mode, 'Nystrom'); 
+% [rel_err_x_inf, rel_err_energy_inf] = Error_method(x_Nystrom(:,14), total_energy, N, alpha, initial_condition , MS_cost, T); 
 % 
-% Runge Kutta 4
-% 
-% [x_rk4,v_rk4] = rk4(N, alpha, initial_condition, MS_cost, T, dt);
-% [energy_k, total_energy] = plotEnergy(x_rk4, v_rk4, T, N, A, n_mode, 'Runge-Kutta 4'); 
-% [rel_err_x_inf, rel_err_energy_inf] = Error_method(x_rk4(:,14), total_energy); 
+%Runge Kutta 4
+%
+[x_rk4,v_rk4] = rk4(N, alpha, initial_condition, MS_cost, T, dt);
+[energy_k, total_energy] = plotEnergy(x_rk4, v_rk4, T, N, A, MS_cost, n_mode, 'rk4'); % Plot Energy modes over time and show equipartition.
+[rel_err_x_inf, rel_err_energy_inf] = Error_method(x_rk4(:,14), total_energy, N, alpha, initial_condition , MS_cost, T); % Calculate relative error for a single coordinate and total energy with norm inf.
 %
 % Ruth 3
 %
 % [x_ruth3,v_ruth3,T_sol] = Ruth3(N, alpha, initial_condition, MS_cost, T, dt);
-% [energy_k, total_energy] = plotEnergy(x_ruth3, v_ruth3, T, N, A, n_mode, 'Ruth 3'); 
-% [rel_err_x_inf, rel_err_energy_inf] = Error_method(x_ruth3(:,14), total_energy); 
+% [energy_k, total_energy] = plotEnergy(x_ruth3, v_ruth3, T, N, A, MS_cost, n_mode, 'Ruth 3'); 
+% [rel_err_x_inf, rel_err_energy_inf] = Error_method(x_ruth3(:,14), total_energy, N, alpha, initial_condition , MS_cost, T); 
 % 
+
+ 
 
 
 
