@@ -66,21 +66,23 @@ end
 % Now replace line 36 with another method
 %
 % Euler
-% [x, v] = EulerMethod(N, alpha, initial_condition, MS_cost, T, dt);
+% [x, v] = EulerMethod(N, alpha, initial_condition, MS_cost, T, current_dt);
 %
 % Leapfrog
-% [x, v] = Leapfrog(N, alpha, initial_condition, MS_cost, T, dt); 
+% [x, v] = Leapfrog(N, alpha, initial_condition, MS_cost, T, current_dt); 
 % 
 % Nystrom 3
-% [x, v] = Nystrom(N, alpha, initial_condition, MS_cost, T, dt); 
+% [x, v] = Nystrom(N, alpha, initial_condition, MS_cost, T, current_dt); 
 % 
 % Runge Kutta 4
-% [x, v] = rk4(N, alpha, initial_condition, MS_cost, T, dt);
+% [x, v] = rk4(N, alpha, initial_condition, MS_cost, T, current_dt);
 %
 % Ruth 3
-% [x_ruth3,v_ruth3,T_sol] = Ruth3(N, alpha, initial_condition, MS_cost, T, dt);
+% [x_ruth3,v_ruth3,T_sol] = Ruth3(N, alpha, initial_condition, MS_cost, T, current_dt);
 % 
- 
+
+
+
 
 
 
