@@ -1,21 +1,56 @@
-function [energy_k,total_energy_error] = plotEnergy(x,v,T,N,A,n_mode, method_name) %aggiungere n_mode 
-
-mode_k = zeros(length(T),N); % modes
-speed_k = zeros(length(T),N);
-energy_k = zeros(length(T),N); %modes' energy
-total_energy_error = zeros(length(T),1);
-total_energy_error(1) = 0;
-total_total_energy_error = zeros(length(T),1);
-total_total_energy_error = 0;
-omega_k = 2*sin(pi.*(1:N)./(2*(N+1))); %frequencies
+function [energy_k,total_energy] = plotEnergy(x, v, T, N, A, MS_cost, n_mode, method_name) 
+dt = T(2)-T(1);
+mode_k = zeros(length(T),N); 
+speed_k = zeros(length(T),N); 
+energy_k = zeros(length(T),N); 
+total_energy = zeros(length(T),1);
+time_average = zeros(length(T),n_mode);
+omega_k = 2 * sqrt(MS_cost) * sin(pi .* (1:N)./(2*(N+1))); %frequencies
 
 for t = 1:length(T)
     mode_k(t,:) = (A*x(t,:)')';
     speed_k(t,:) = (A*v(t,:)')';
-    energy_k(t,:) = 0.5*((speed_k(t,:))).^2 + 0.5*(omega_k(1,:).*mode_k(t,:)).^2; 
-    total_energy_error(t) = abs(sum(energy_k(t,:)) -1);
+    energy_k(t,:) = 0.5 * ((speed_k(t,:))).^2 + 0.5 * (omega_k(1,:) .* mode_k(t,:)).^2; 
+    total_energy(t) = sum(energy_k(t,:));
+     % for i = 1:n_mode
+     %     time_average(t,i) = trapz(0:dt:T(t),energy_k(1:t,i)) / T(t);
+     % end
+end
+%
+% plot of n_modes
+%
+figure(1);
+for i = 1:n_mode
+    coloreCurva = randi([0, 255], 1, 3);
+    coloreCurva = coloreCurva / 255;
+    plot(T, energy_k(:,i), 'Color', coloreCurva, 'LineWidth', 1);
+    hold on;
+end
+hold off;
+s = strcat('Energy modes  ',method_name);
+title(s);
+xlabel('time');
+ylabel('Energy of modes');
+%
+% Show violation of equipartition
+%
+figure(2);
+for i = 1:n_mode
+    coloreCurva = randi([0, 255], 1, 3);
+    coloreCurva = coloreCurva / 255;
+    plot(T, time_average(:,i), 'Color', coloreCurva, 'LineWidth', 1);
+    hold on;
+end
+hold off;
+s = strcat('Temporal average of energy ',method_name);
+title(s);
+xlabel('time');
+ylabel('Time average of energy');
+
 end
 
+
+%{
 for t = 2:length(T)
 total_total_energy_error(t) = (total_total_energy_error(t-1) + total_energy_error(t));
 end
@@ -60,4 +95,6 @@ xlabel('time');
 ylabel('Energy of modes');
 %saveas(2,s)
 end
+%}
+
 
