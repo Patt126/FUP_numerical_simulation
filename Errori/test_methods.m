@@ -12,10 +12,10 @@ n_mode = 5;
 lattice_parameter = 1; %lattice parameter
 initial_condition = zeros(2*N,1);
 %
-omega_k = 2*sin(pi.*(1:N)./(2*(N+1))); %frequencies
+omega_k = 2*sqrt(MS_cost)*sin(pi.*(1:N)./(2*(N+1))); %frequencies
 
 mode_0 = zeros(N,1);
-omega_0 = 2*sin(pi/(2*(N+1))); %consider the possibility of compute here normal mode and then pass to function
+omega_0 = 2*sqrt(MS_cost)*sin(pi/(2*(N+1))); %consider the possibility of compute here normal mode and then pass to function
 A = zeros(N,N);
 for row = 1:N
     A(row,:) = sqrt(2/(N+1))*sin((pi*row.*(1:N))/(N+1)); 
@@ -80,6 +80,7 @@ end
 % Ruth 3
 % [x_ruth3,v_ruth3,T_sol] = Ruth3(N, alpha, initial_condition, MS_cost, T, dt);
 % 
+ 
 
 
 
