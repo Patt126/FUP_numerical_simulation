@@ -12,10 +12,10 @@ n_mode = 5;
 lattice_parameter = 1; %lattice parameter
 initial_condition = zeros(2*N,1);
 %
-omega_k = 2*sin(pi.*(1:N)./(2*(N+1))); %frequencies
+omega_k = 2*sqrt(MS_cost)*sin(pi.*(1:N)./(2*(N+1))); %frequencies
 
 mode_0 = zeros(N,1);
-omega_0 = 2*sin(pi/(2*(N+1))); %consider the possibility of compute here normal mode and then pass to function
+omega_0 = 2*sqrt(MS_cost)*sin(pi/(2*(N+1))); %consider the possibility of compute here normal mode and then pass to function
 A = zeros(N,N);
 for row = 1:N
     A(row,:) = sqrt(2/(N+1))*sin((pi*row.*(1:N))/(N+1)); 
@@ -47,14 +47,20 @@ while current_dt >= dt_min
         total_energy(t) = sum(energy_k(t,:));
     end
 
-    % Write data to CSV file
+    % Write data to CSV file with column names
+    column_names = {'x1', 'x5', 'x16', 'Mode1', 'Mode3', 'Mode5', 'TotalEnergy'};
     result_data = [sol_ode45(:,33),sol_ode45(:,37),sol_ode45(:,48), mode_k(:,1),mode_k(:,3),mode_k(:,5), total_energy];
+    result_table = array2table(result_data, 'VariableNames', column_names);
     result_file = sprintf('results_%.6f.csv', current_dt);  % Create file name with dt
-    writematrix(result_data, result_file);
-
+    writetable(result_table, result_file);
     % Halve the number of steps for the next iteration
     current_dt = current_dt/2;
 end
+
+
+
+
+
 
 
 
