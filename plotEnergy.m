@@ -7,7 +7,7 @@ total_energy = zeros(length(T),1);
 time_average = zeros(length(T),n_mode);
 omega_k = 2 * sqrt(MS_cost) * sin(pi .* (1:N)./(2*(N+1))); %frequencies
 
-for t = 1:length(T)-1
+for t = 1:length(T)
     mode_k(t,:) = (A*x(t,:)')';
     speed_k(t,:) = (A*v(t,:)')';
     energy_k(t,:) = 0.5 * ((speed_k(t,:))).^2 + 0.5 * (omega_k(1,:) .* mode_k(t,:)).^2; 
