@@ -14,9 +14,11 @@ function solutionErrors(solutionCord, exactCord, solutionEnergy, IdMethod, dt, t
         rel_err_cord_ft(i) = abs(error_cord(end, i)) / abs(exactCord(end, i));
         rel_err_cord_l2(i) = norm(error_cord(:, i)) / norm(exactCord(:, i));
     end
+    
+    number_of_step = t_max/dt;
 
     error_energy = solutionEnergy - 1;
-    rel_err_energy_l2 = norm((error_energy)) / sqrt(t_max);
+    rel_err_energy_l2 = norm((error_energy)) / sqrt(number_of_step);
     rel_err_energy_ft = abs(error_energy(end));
     rel_err_energy_inf = norm(error_energy, inf);
 
