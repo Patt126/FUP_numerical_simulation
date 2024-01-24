@@ -7,14 +7,14 @@ total_energy = zeros(length(T),1);
 time_average = zeros(length(T),n_mode);
 omega_k = 2 * sqrt(MS_cost) * sin(pi .* (1:N)./(2*(N+1))); %frequencies
 
-for t = 1:length(T)
+for t = 1:length(T)-1
     mode_k(t,:) = (A*x(t,:)')';
     speed_k(t,:) = (A*v(t,:)')';
     energy_k(t,:) = 0.5 * ((speed_k(t,:))).^2 + 0.5 * (omega_k(1,:) .* mode_k(t,:)).^2; 
     total_energy(t) = sum(energy_k(t,:));
-     % for i = 1:n_mode
-     %     time_average(t,i) = trapz(0:dt:T(t),energy_k(1:t,i)) / T(t);
-     % end
+      for i = 1:n_mode
+          time_average(t,i) = sum(energy_k(1:t,i))/t;
+      end
 end
 %
 % plot of n_modes
@@ -42,7 +42,7 @@ for i = 1:n_mode
     hold on;
 end
 hold off;
-s = strcat('Temporal average of energy ',method_name);
+s = strcat('Temporal average of energy  ',method_name);
 title(s);
 xlabel('time');
 ylabel('Time average of energy');
@@ -74,7 +74,7 @@ saveas(3,s)
 % Total energy plot (CONSIDER PLOT OUT)
 figure(1);
 plot(T,total_energy_error,'b-','LineWidth',1);
-s = strcat('Total Energy error  ',method_name);
+s = strcat('Total Energy error  ', method_name);
 title(s);
 xlabel('time')
 ylabel('Total  error ');
@@ -89,12 +89,13 @@ for i = 1:n_mode
     hold on;
 end
 hold off;
-s = strcat('Energy modes  ',method_name);
+s = strcat('Energy modes  ', method_name);
 title(s);
 xlabel('time');
 ylabel('Energy of modes');
 %saveas(2,s)
 end
 %}
+
 
 
