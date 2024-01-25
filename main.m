@@ -30,7 +30,7 @@ A = zeros(N,N);
 for row = 1:N
     A(row,:) = sqrt(2/(N+1)) * sin((pi * row .* (1:N))/(N+1)); 
 end
-mode_0(1) = energy * sqrt(2)/omega_0; % At t=0 energy is all in the first mode --> energy = 0.5*(omega_0*mode_0)^2. Solve for mode_0.
+mode_0(1) = sqrt(energy) * sqrt(2)/omega_0; % At t=0 energy is all in the first mode --> energy = 0.5*(omega_0*mode_0)^2. Solve for mode_0.
 initial_condition(N+1:2*N,1) = A\mode_0; % Assign initial positions
 %
 %Euler Method
