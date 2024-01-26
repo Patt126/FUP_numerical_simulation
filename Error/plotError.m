@@ -53,7 +53,7 @@ peff_Q_l2 = zeros(1,number_of_dt);
 
 for i = 2:number_of_dt
     peff_E_inf(i) = log2(energy_inf(i)/energy_inf(i-1));
-    peff_E_l2(i) = log2(energy_l2(i)/(sqrt(2) * energy_l2(i-1)));
+    peff_E_l2(i) = log2(energy_l2(i)/(sqrt(2) * energy_l2(i-1))); %reuse relative error for energy t+using always the fact that energy exact is 1
     peff_Q_l2(i) = log2(Q1_l2(i)/(sqrt(2) * Q1_l2(i-1)));
     peff_Q_inf(i) = log2(Q1_inf(i)/(sqrt(2) * Q1_inf(i-1)));
     
