@@ -56,7 +56,7 @@ while current_dt >= dt_min
     exact_matrix = readmatrix(result_file);
     solution_matrix = [x(:,1),x(:,5),x(:,16),mode_k(:,1),mode_k(:,3),mode_k(:,5)];
 
-    solutionErrors(solution_matrix,exact_matrix,total_energy(:),1,...
+    solutionErrors(solution_matrix,exact_matrix,total_energy(:),'LeapFrog',...
         current_dt,T_max,T,MS_cost);
 
     % Halve the number of steps for the next iteration
