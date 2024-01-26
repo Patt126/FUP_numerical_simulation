@@ -18,7 +18,7 @@ I = @(t,state) diag(ones(N,1))*state;
 
 f = zeros(4,N);
 g = zeros(4,N);
-
+%Apply nystrom scheme
 for t = 1:length(T)-1
     f(1,:) = x(t,:);
     g(1,:) = v(t,:);
