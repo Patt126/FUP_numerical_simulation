@@ -42,8 +42,6 @@ for i = 1:n_mode
     hold on;
 end
 
-% Add horizontal line at -1/32
-hline = line([T(1), T(end)], [1/32, 1/32], 'Color', 'black', 'LineStyle', '--', 'LineWidth', 2);
 
 
 hold off;
