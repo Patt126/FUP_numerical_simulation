@@ -18,7 +18,7 @@ function solutionErrors(solutionCord, exactCord, solutionEnergy, IdMethod, dt, t
     number_of_step = t_max/dt;
 
     error_energy = solutionEnergy - 1;
-    rel_err_energy_l2 = norm((error_energy)) / sqrt(number_of_step);
+    rel_err_energy_l2 = norm((error_energy)) / sqrt(number_of_step); %for energy where E is always 1 the error reduce to this in our case
     rel_err_energy_ft = abs(error_energy(end));
     rel_err_energy_inf = norm(error_energy, inf);
 
