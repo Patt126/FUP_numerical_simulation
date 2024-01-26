@@ -5,21 +5,22 @@ x(1,:) = initial_condition(N+1:2*N);
 v = zeros(length(T),N);
 v(1,:) = initial_condition(1:N);
 
-b_x = [2/3,-2/3,1];
+b_x = [2/3,-2/3,1]; %ruth coeffiicient
 b_v = [7/24,3/4,-1/24];
 
 
 e = ones(N,1);
-linear_part = spdiags([e -2*e e],-1:1,N,N);
+linear_part = spdiags([e -2*e e],-1:1,N,N); %define system matrix
 next_quadratic = spdiags([e -e], 0:1 ,N,N);
 prev_quadratic = spdiags([-e e], -1:0 ,N,N);
 
 F = @(t,state) MS_cost*linear_part*state + alpha*((next_quadratic*state).^2-(prev_quadratic*state).^2);
 I = @(t,state) diag(ones(N,1))*state;
 
+%terms to evaluate ruth rk steps
 f = zeros(4,N);
 g = zeros(4,N);
-
+%Apply partitione algorithm
 for t = 1:length(T)-1
     g(1,:) = v(t,:);
     f(2,:) = x(t,:); 
@@ -27,7 +28,7 @@ for t = 1:length(T)-1
         g(i+1,:) = g(i,:) +dt*b_v(i)*F(t,f(i+1,:)')';
         f(i+2,:) = f(i+1,:) + dt*b_x(i)*I(t,g(i+1,:)')';
    end
-   v(t+1,:) = g(4,:)9hoho;
+   v(t+1,:) = g(4,:);
    x(t+1,:) = f(5,:);
 
 end
