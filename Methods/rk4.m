@@ -13,6 +13,7 @@ prev_quadratic = spdiags([-e e], -1:0 ,N,N);
 F = @(t,x) sqrt(MS_cost)*linear_part*x + alpha*((next_quadratic*x).^2-(prev_quadratic*x).^2);
 I = @(t,state) diag(ones(N,1))*state;
 
+%find rk steps
 for t = 1:length(T)-1
     f1 = F(T(t),x(t,:)');
     f2 = F(T(t)+dt/2,x(t,:)'+dt*f1/2);
