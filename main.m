@@ -57,9 +57,9 @@ disp(rel_err_energy_inf);
 % 
 %Runge Kutta 4
 %
-[x_rk4,v_rk4] = rk4(N, alpha, initial_condition, MS_cost, T, dt);
-[energy_k, total_energy] = plotEnergy(x_rk4, v_rk4, T, N, A, MS_cost, n_mode, 'rk4'); % Plot Energy modes over time and show equipartition.
-[rel_err_x_inf, rel_err_energy_inf] = Error_method(x_rk4(:,14), total_energy, N, alpha, initial_condition , MS_cost, T); % Calculate relative error for a single coordinate and total energy with norm inf.
+%[x_rk4,v_rk4] = rk4(N, alpha, initial_condition, MS_cost, T, dt);
+%[energy_k, total_energy] = plotEnergy(x_rk4, v_rk4, T, N, A, MS_cost, n_mode, 'rk4'); % Plot Energy modes over time and show equipartition.
+%[rel_err_x_inf, rel_err_energy_inf] = Error_method(x_rk4(:,14), total_energy, N, alpha, initial_condition , MS_cost, T); % Calculate relative error for a single coordinate and total energy with norm inf.
 %
 % Ruth 3
 %
