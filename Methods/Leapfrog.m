@@ -10,7 +10,7 @@ x(2,:) = initial_condition(N+1:2*N) + dt * initial_condition(1:N);
 
 
 e = ones(N,1);
-linear_part = spdiags([e -2*e e],-1:1,N,N);
+linear_part = spdiags([e -2*e e],-1:1,N,N); %define equation matrix
 next_quadratic = spdiags([e -e], 0:1 ,N,N);
 prev_quadratic = spdiags([-e e], -1:0 ,N,N);
 
